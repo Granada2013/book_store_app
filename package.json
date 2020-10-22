@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode=development --open --hot",
     "build": "webpack --mode=production"
   },
@@ -28,9 +27,5 @@
   "dependencies": {
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
-  },
-  "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react"
-  ]
+  }
 }

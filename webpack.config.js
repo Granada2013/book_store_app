@@ -12,6 +12,7 @@ module.exports = {
       react: path.join(__dirname, 'node_modules', 'react'),
     },
   },
+  watch: true,
   module: {
     rules: [
       {
@@ -19,6 +20,12 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          options: {
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react"
+            ]
+          }
         },
       },
       {
@@ -36,7 +43,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: './src/index.html',
+      template: './public/index.html',
     }),
   ],
 };

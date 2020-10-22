@@ -1,6 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
+import App from './components/app';
+import '../public/index.css';
 
 
-render(React.createElement('h1', null, 'Hello World!'),
-      document.getElementById('root'));
+
+render(<App/>,document.getElementById('root'));
