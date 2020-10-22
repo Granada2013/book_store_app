@@ -1,21 +1,40 @@
 import React from 'react';
-// import {Col, Row, Container, Button} from 'reactstrap';
+import {Container, Row, Col} from 'reactstrap';
+import CatalogList from '../catalogList';
+import styled from 'styled-components';
 
+const NavBlock = styled.div`
+  display: fixed
+  justify-content: flex-end;
+  padding-right: 50px;
+  background: #242323;
+  height: 50px;
+  width: 100%;
+  margin-bottom: 30px;
+`;
 
 export default class App extends React.Component {
+
   constructor() {
     super();
     this.state = {
-      order: {}
+      order: []
     };
   }
 
   render() {
     return (
-      <h1>Hello World!</h1>
+      <>
+      <NavBlock>
+      </NavBlock>
+        <Container>
+        <Row>
+          <Col md="8">
+            <CatalogList/>
+          </Col>
+        </Row>
+        </Container>
+      </>
     );
   }
-
-
-
 }

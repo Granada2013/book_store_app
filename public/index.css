@@ -5,7 +5,6 @@
   outline: none;
 }
 body {
-    overflow-x: hidden;
-    font-size: 16px;
+    font-size: 24px;
     height: 100%;
 }
