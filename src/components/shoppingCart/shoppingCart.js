@@ -8,7 +8,7 @@ const CartBlock = styled.div`
   align-items: center;
   cursor: pointer;
   .fa {
-    font-size: 2.5em;
+    font-size: 2.2em;
     color: #fff6f6;
     margin-right: 10px;
   }

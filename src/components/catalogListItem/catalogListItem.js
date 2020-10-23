@@ -8,7 +8,7 @@ const ListItem = styled(ListGroupItem)`
   align-items: center;
   cursor: pointer;
   :hover {
-    background: #f1f1f1;
+    background: #ded6d6;
   }
   .main-info {
     display: flex;
@@ -21,14 +21,14 @@ const ListItem = styled(ListGroupItem)`
 `;
 
 const CatalogListItem = (props) => {
-  const {title, image, price} = props;
+  const {item, onSelectItem} = props;
     return (
-      <ListItem>
+      <ListItem onClick={() => onSelectItem(item)}>
         <div className="main-info">
-          <img src={image} alt="img"/>
-          <span>{title}</span>
+          <img src={item.image} alt="img"/>
+          <span>{item.title}</span>
         </div>
-        <span><strong>$ {price}</strong></span>
+        <span><strong>$ {item.price}</strong></span>
       </ListItem>
     );
 };

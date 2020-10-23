@@ -6,6 +6,10 @@ import CatalogService from '../../services/catalogService';
 
 
 export default class CatalogList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     list: null,
     loading: true,
@@ -35,10 +39,11 @@ export default class CatalogList extends React.Component {
 
   renderItems = (arr) => {
     return arr.map( (item) => {
-      const {isbn13, ...itemProps} = item;
+      const {isbn13} = item;
       return(
         <CatalogListItem key={isbn13}
-          {...itemProps}/>
+          item={item}
+          onSelectItem={this.props.onSelectItem}/>
         );
     });
   };
