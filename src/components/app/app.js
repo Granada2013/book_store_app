@@ -37,15 +37,31 @@ export default class App extends React.Component {
   };
 
   onAddToCart = (amount) => {
-    const {selectedItem} = this.state;
-    const newOrder = {item: selectedItem.title, amount};
-    this.setState( state => {
-      return {
-        orders: [...state.orders, newOrder],
-        selectedItem: null
-      };
-    });
+    const {title, isbn13} = this.state.selectedItem;
+    const sameItems = this.state.orders.filter(order => order.isbn13 == isbn13);
+    if (sameItems.length == 0) {
+      this.setState(state => {
+        return {
+          orders: [...state.orders, {title, isbn13, amount}],
+          selectedItem: null
+        };
+      });
+    }
+    else {
+      this.setState(state => {
+        const ordersUpdated = state.orders.map(order => {
+          if (order.isbn13 == isbn13) {
+            order.amount += amount;
+          }
+          return {
+            orders: ordersUpdated,
+            selectedItem: null
+          };
+        });
+      });
+    }
     this.toggleModal();
+    console.log(this.state.orders);
   };
 
   render() {
