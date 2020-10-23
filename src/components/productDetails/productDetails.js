@@ -1,6 +1,6 @@
 import React from 'react';
-import {Modal, ModalHeader, ModalBody, ModalFooter,
-        Button, Row, Col, ListGroup, ListGroupItem, Input, Label} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter, Button,
+        Row, Col, ListGroup, ListGroupItem, Input, Label, Alert} from 'reactstrap';
 import styled from 'styled-components';
 
 const Header = styled(ModalHeader)`
@@ -56,13 +56,28 @@ const ListItem = styled(ListGroupItem)`
   font-size: .9em;
 `;
 
+const AlertMessage = (props) => {
+  const {success} = props;
+  let alert = null;
+  if (success === false) {
+    alert = <Alert color="danger">Недостаточно книг на складе. Максимум: 3</Alert>;
+  }
+
+  return (
+    <>
+      {alert}
+    </>
+  );
+};
+
 export default class ProductDetails extends React.Component {
   constructor(props) {
     super(props);
   }
 
   state = {
-    amount: 0
+    amount: 0,
+    success: null
   };
 
   onChangeAmount = event => {
@@ -73,14 +88,18 @@ export default class ProductDetails extends React.Component {
   onFormSubmit = event => {
     event.preventDefault();
     const {amount} = this.state;
-    this.props.onAddToCart(amount);
-
+    if (amount <= 3) {
+      this.setState({success: true});
+      this.props.onAddToCart(amount);
+      return;
+    }
+    this.setState({success: false});
   };
 
   render() {
     const {selectedItem: {title, subtitle, image, price, isbn13, url},
           isOpen, toggle} = this.props;
-
+    const {success} = this.state;
     return (
       <Modal isOpen={isOpen} toggle={toggle}>
         <Header>
@@ -116,6 +135,7 @@ export default class ProductDetails extends React.Component {
             <Button type='submit' color='success'>В корзину</Button>
           </form>
         </Footer>
+        <AlertMessage success={success}/>
       </Modal>
     );
   }
