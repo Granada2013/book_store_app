@@ -41,10 +41,11 @@ export default class App extends React.Component {
   };
 
   onAddToCart = (amount) => {
+    const {orders} = this.state;
     const {title, image, isbn13, price} = this.state.selectedItem;
-    const sameItems = this.state.orders.filter(order => order.isbn13 == isbn13);
 
-    if (sameItems.length == 0) {
+    const index = orders.findIndex(order => order.isbn13 === isbn13);
+    if (index == -1) {
       this.setState(state => {
         return {
           orders: [...state.orders, {title, image, price, isbn13, amount}],
@@ -54,15 +55,13 @@ export default class App extends React.Component {
     }
     else {
       this.setState(state => {
-        const ordersUpdated = state.orders.map(order => {
-          if (order.isbn13 == isbn13) {
-            order.amount += amount;
-          }
-          return {
-            orders: ordersUpdated,
-            selectedItem: null
-          };
-        });
+        const orderUpdated = {...orders[index]};
+        orderUpdated.amount += amount;
+        return {
+          orders: [...state.orders.slice(0, index), orderUpdated,
+                   ...state.orders.slice(index+1)],
+          selectedItem: null
+        };
       });
     }
     this.toggleModal();
