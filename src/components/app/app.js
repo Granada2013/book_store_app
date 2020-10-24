@@ -1,19 +1,23 @@
 import React from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import CatalogList from '../catalogList';
-import ShoppingCart from '../shoppingCart';
 import ProductDetails from '../productDetails';
+import ShoppingCart from '../shoppingCart';
+import CartList from '../cartList';
 import styled from 'styled-components';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 const NavBlock = styled.div`
   display: fixed;
   justify-content: flex-end;
   align-items: center;
-  padding-right: 50px;
   background: #242323;
   height: 60px;
   width: 100%;
   margin-bottom: 30px;
+  a {
+    text-decoration: none;
+  }
 `;
 
 export default class App extends React.Component {
@@ -21,7 +25,7 @@ export default class App extends React.Component {
   state = {
       orders: [],
       selectedItem: null,
-      isOpenModal: false
+      isOpenModal: false,
     };
 
   onSelectItem = (selectedItem) => {
@@ -29,20 +33,20 @@ export default class App extends React.Component {
     this.setState({selectedItem});
   };
 
+
   toggleModal = () => {
-    const {isOpenModal} = this.state;
     this.setState({
-      isOpenModal: !isOpenModal
+      isOpenModal: !this.state.isOpenModal
     });
   };
 
   onAddToCart = (amount) => {
-    const {title, isbn13} = this.state.selectedItem;
+    const {title, image, isbn13} = this.state.selectedItem;
     const sameItems = this.state.orders.filter(order => order.isbn13 == isbn13);
     if (sameItems.length == 0) {
       this.setState(state => {
         return {
-          orders: [...state.orders, {title, isbn13, amount}],
+          orders: [...state.orders, {title, image, isbn13, amount}],
           selectedItem: null
         };
       });
@@ -72,19 +76,34 @@ export default class App extends React.Component {
                                   toggle={this.toggleModal}
                                   onAddToCart={this.onAddToCart}/> : null;
     return (
-      <>
-        <NavBlock>
-          <ShoppingCart number={orders.length}/>
-        </NavBlock>
-        <Container>
-        <Row>
-          <Col md="8">
-            <CatalogList onSelectItem={this.onSelectItem}/>
-          </Col>
-        </Row>
-        {modal}
-        </Container>
-      </>
+      <Router>
+        <>
+          <NavBlock>
+            <Container>
+              <Link to="/">
+                <span>Home</span>
+              </Link>
+              <Link to="/cart">
+                <ShoppingCart
+                  number={orders.length}/>
+              </Link>
+            </Container>
+          </NavBlock>
+          <Container>
+          <Row>
+            <Col md="8">
+                <Route exact path="/">
+                  <CatalogList onSelectItem={this.onSelectItem}/>
+                </Route>
+                <Route path="/cart">
+                  <CartList orders={orders}/>
+                </Route>
+            </Col>
+          </Row>
+          {modal}
+          </Container>
+        </>
+      </Router>
     );
   }
 }
