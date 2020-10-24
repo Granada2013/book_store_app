@@ -2,26 +2,12 @@ import React from 'react';
 import {Container, Row, Col} from 'reactstrap';
 import CatalogList from '../catalogList';
 import ProductDetails from '../productDetails';
-import ShoppingCart from '../shoppingCart';
 import CartList from '../cartList';
-import styled from 'styled-components';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import Navbar from '../navbar';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
-const NavBlock = styled.div`
-  display: fixed;
-  justify-content: flex-end;
-  align-items: center;
-  background: #242323;
-  height: 60px;
-  width: 100%;
-  margin-bottom: 30px;
-  a {
-    text-decoration: none;
-  }
-`;
 
 export default class App extends React.Component {
-
   state = {
       orders: [],
       selectedItem: null,
@@ -43,7 +29,6 @@ export default class App extends React.Component {
   onAddToCart = (amount) => {
     const {orders} = this.state;
     const {title, image, isbn13, price} = this.state.selectedItem;
-
     const index = orders.findIndex(order => order.isbn13 === isbn13);
     if (index == -1) {
       this.setState(state => {
@@ -70,10 +55,9 @@ export default class App extends React.Component {
   onDeleteFormCart = (isbn) => {
     this.setState(state => {
       const index = state.orders.findIndex(order => order.isbn13 === isbn);
-      const ordersUpdated = [...state.orders.slice(0, index),
-                             ...state.orders.slice(index+1)];
       return {
-        orders: ordersUpdated
+        orders: [...state.orders.slice(0, index),
+                 ...state.orders.slice(index+1)]
       };
     });
   };
@@ -88,17 +72,7 @@ export default class App extends React.Component {
     return (
       <Router>
         <>
-          <NavBlock>
-            <Container>
-              <Link to="/">
-                <span>Home</span>
-              </Link>
-              <Link to="/cart">
-                <ShoppingCart
-                  number={orders.length}/>
-              </Link>
-            </Container>
-          </NavBlock>
+          <Navbar number={orders.length}/>
           <Container>
           <Row>
             <Col md="8">
