@@ -1,18 +1,22 @@
 import React from 'react';
-import {ListGroup} from 'reactstrap';
+import {ListGroup, Button} from 'reactstrap';
 import CartListItem from '../cartListItem';
 
-class CartList extends React.Component {
+export default class CartList extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  renderOrderItems = arr => {
-    return arr.map(orderItem => {
+  renderOrderItems = orders => {
+    if (orders.length === 0) {
+      return (<p>Ваша корзина пуста</p>);
+    }
+    return orders.map(orderItem => {
       const {isbn13} = orderItem;
       return (
         <CartListItem key={isbn13}
-          orderItem={orderItem}/>
+          orderItem={orderItem}
+          onDelete={this.props.onDelete}/>
       );
     });
   };
@@ -20,13 +24,12 @@ class CartList extends React.Component {
   render() {
     const orderItems = this.renderOrderItems(this.props.orders);
     return (
+      <>
+      <h1>Корзина</h1>
       <ListGroup>
         {orderItems}
       </ListGroup>
+      </>
     );
   }
-
-};
-
-
-export default CartList;
+}

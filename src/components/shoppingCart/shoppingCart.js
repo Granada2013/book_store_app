@@ -6,7 +6,6 @@ import {Badge} from 'reactstrap';
 const CartBlock = styled.div`
   display: inline-flex;
   align-items: center;
-  cursor: pointer;
   .fa {
     font-size: 2.2em;
     color: #fff6f6;

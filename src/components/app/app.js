@@ -41,12 +41,13 @@ export default class App extends React.Component {
   };
 
   onAddToCart = (amount) => {
-    const {title, image, isbn13} = this.state.selectedItem;
+    const {title, image, isbn13, price} = this.state.selectedItem;
     const sameItems = this.state.orders.filter(order => order.isbn13 == isbn13);
+
     if (sameItems.length == 0) {
       this.setState(state => {
         return {
-          orders: [...state.orders, {title, image, isbn13, amount}],
+          orders: [...state.orders, {title, image, price, isbn13, amount}],
           selectedItem: null
         };
       });
@@ -65,7 +66,17 @@ export default class App extends React.Component {
       });
     }
     this.toggleModal();
-    console.log(this.state.orders);
+  };
+
+  onDeleteFormCart = (isbn) => {
+    this.setState(state => {
+      const index = state.orders.findIndex(order => order.isbn13 === isbn);
+      const ordersUpdated = [...state.orders.slice(0, index),
+                             ...state.orders.slice(index+1)];
+      return {
+        orders: ordersUpdated
+      };
+    });
   };
 
   render() {
@@ -96,7 +107,9 @@ export default class App extends React.Component {
                   <CatalogList onSelectItem={this.onSelectItem}/>
                 </Route>
                 <Route path="/cart">
-                  <CartList orders={orders}/>
+                  <CartList
+                    orders={orders}
+                    onDelete={this.onDeleteFormCart}/>
                 </Route>
             </Col>
           </Row>
