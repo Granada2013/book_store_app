@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal, ModalHeader, ModalBody, ModalFooter, Button,
-        Row, Col, ListGroup, ListGroupItem, Input, Label, Alert} from 'reactstrap';
+        Row, Col, ListGroup, ListGroupItem, Label, Alert} from 'reactstrap';
+import Counter from '../counter';
 import styled from 'styled-components';
 
 const Header = styled(ModalHeader)`
@@ -37,13 +38,6 @@ const Footer = styled(ModalFooter)`
     justify-content: flex-end;
     align-items: center;
   }
-  input {
-    display: inline-block;
-    padding-right: 0;
-    width: 50px;
-    margin-left: 7px;
-    margin-right: 7px;
-  }
 `;
 
 const ListItem = styled(ListGroupItem)`
@@ -62,7 +56,6 @@ const AlertMessage = (props) => {
   if (success === false) {
     alert = <Alert color="danger">Недостаточно книг на складе. Максимум: 3</Alert>;
   }
-
   return (
     <>
       {alert}
@@ -76,13 +69,13 @@ export default class ProductDetails extends React.Component {
   }
 
   state = {
-    amount: 0,
+    amount: 1,
     success: null
   };
 
   onChangeAmount = event => {
-    const amount = +event.target.value;
-    this.setState({amount});
+    this.setState({
+      amount: event.target.value});
   };
 
   onFormSubmit = event => {
@@ -99,8 +92,9 @@ export default class ProductDetails extends React.Component {
   render() {
     const {selectedItem: {title, subtitle, image, price, isbn13, url},
           isOpen, toggle} = this.props;
-    const {success} = this.state;
+    const {success, amount} = this.state;
     return (
+      <>
       <Modal isOpen={isOpen} toggle={toggle}>
         <Header>
           <Button close onClick={toggle}/>
@@ -129,14 +123,14 @@ export default class ProductDetails extends React.Component {
         <Footer>
           <form onSubmit={this.onFormSubmit}>
             <Label for="amount">Выберите количество</Label>
-            <Input id="amount" type="number"
-                   min="1" required
-                   onInput={this.onChangeAmount}/>
+            <Counter amount={amount}
+                     onChangeAmount={this.onChangeAmount}/>
             <Button type='submit' color='success'>В корзину</Button>
           </form>
         </Footer>
         <AlertMessage success={success}/>
       </Modal>
+      </>
     );
   }
 }

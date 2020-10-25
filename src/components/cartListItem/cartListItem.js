@@ -1,6 +1,7 @@
 import React from 'react';
 import {ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
+import Counter from '../counter';
 
 const ListItem = styled(ListGroupItem)`
   display: flex;
@@ -21,21 +22,34 @@ const ListItem = styled(ListGroupItem)`
   }
 `;
 
-const CartListItem = (props) => {
-  const {title, image, price, isbn13, amount} = props.orderItem;
-  const total = amount * price;
-    return (
-      <ListItem>
-        <div className="main-info">
-          <img src={image} alt="img"/>
-          <span>{title}</span>
-        </div>
-        <span>{amount} шт.</span>
-        <span><strong>$ {total}</strong></span>
-        <i className="fa fa-trash"
-           onClick={() => props.onDelete(isbn13)}/>
-      </ListItem>
-    );
-};
+export default class CartListItem extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-export default CartListItem;
+  state = {
+    amount: this.props.orderItem.amount
+  };
+  onChangeAmount = event => {
+    this.setState({
+      amount: event.target.value});
+  };
+
+  render() {
+    const {title, image, price, isbn13, amount} = this.props.orderItem;
+    const total = amount * price;
+      return (
+        <ListItem>
+          <div className="main-info">
+            <img src={image} alt="img"/>
+            <span>{title}</span>
+          </div>
+          <Counter amount={this.state.amount}
+                   onChangeAmount={this.onChangeAmount}/>
+          <span><strong>$ {total}</strong></span>
+          <i className="fa fa-trash"
+             onClick={() => this.props.onDelete(isbn13)}/>
+        </ListItem>
+      );
+  }
+};
