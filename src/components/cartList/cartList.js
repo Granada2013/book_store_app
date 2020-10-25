@@ -16,6 +16,7 @@ export default class CartList extends React.Component {
       return (
         <CartListItem key={isbn13}
           orderItem={orderItem}
+          onChangeAmount={this.props.onChangeAmount}
           onDelete={this.props.onDelete}/>
       );
     });

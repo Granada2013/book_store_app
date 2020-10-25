@@ -13,7 +13,7 @@ const CustomInput = styled(Input)`
 const Counter = props => {
   return (
     <CustomInput id="amount" type="number" value={props.amount}
-           min="1" required
+           min="1" max="50" required
            onInput={props.onChangeAmount}/>
   );
 };

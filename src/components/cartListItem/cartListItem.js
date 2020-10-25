@@ -28,27 +28,35 @@ export default class CartListItem extends React.Component {
   }
 
   state = {
-    amount: this.props.orderItem.amount
+    isValid: true
   };
-  onChangeAmount = event => {
-    this.setState({
-      amount: event.target.value});
+
+  onUpdateAmount = event => {
+    const {isbn13, amount} = this.props.orderItem;
+    const updatedAmount = +event.target.value;
+    
+    if (updatedAmount > 3) {
+      this.setState({isValid: false});
+    }
+    this.props.onChangeAmount({isbn: isbn13, amount: updatedAmount});
   };
 
   render() {
     const {title, image, price, isbn13, amount} = this.props.orderItem;
-    const total = amount * price;
+    const total = (amount * price).toFixed(2);
+    const message = (this.state.isValid) ? null : 'Слишклм много книг';
       return (
         <ListItem>
           <div className="main-info">
             <img src={image} alt="img"/>
             <span>{title}</span>
           </div>
-          <Counter amount={this.state.amount}
-                   onChangeAmount={this.onChangeAmount}/>
+          <Counter amount={amount}
+                   onChangeAmount={this.onUpdateAmount}/>
           <span><strong>$ {total}</strong></span>
           <i className="fa fa-trash"
              onClick={() => this.props.onDelete(isbn13)}/>
+          {message}
         </ListItem>
       );
   }

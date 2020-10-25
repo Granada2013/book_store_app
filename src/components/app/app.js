@@ -6,7 +6,6 @@ import CartList from '../cartList';
 import Navbar from '../navbar';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
-
 export default class App extends React.Component {
   state = {
       orders: [],
@@ -18,7 +17,6 @@ export default class App extends React.Component {
     this.toggleModal();
     this.setState({selectedItem});
   };
-
 
   toggleModal = () => {
     this.setState({
@@ -33,23 +31,30 @@ export default class App extends React.Component {
     if (index == -1) {
       this.setState(state => {
         return {
-          orders: [...state.orders, {title, image, price, isbn13, amount}],
-          selectedItem: null
+          orders: [...state.orders, {title, image, price, isbn13, amount}]
         };
       });
     }
     else {
-      this.setState(state => {
-        const orderUpdated = {...orders[index]};
-        orderUpdated.amount += amount;
-        return {
-          orders: [...state.orders.slice(0, index), orderUpdated,
-                   ...state.orders.slice(index+1)],
-          selectedItem: null
-        };
-      });
+      const amountUpdated = orders[index].amount + amount;
+      this.onChangeAmount({isbn: isbn13, amount: amountUpdated});
     }
+
+    this.setState({selectedItem: null});
     this.toggleModal();
+  };
+
+  onChangeAmount = ( {isbn, amount} ) => {
+    const {orders} = this.state;
+    const index = orders.findIndex(order => order.isbn13 === isbn);
+    this.setState(state => {
+      const orderUpdated = {...orders[index]};
+      orderUpdated.amount = amount;
+      return {
+        orders: [...state.orders.slice(0, index), orderUpdated,
+                 ...state.orders.slice(index+1)]
+        };
+    });
   };
 
   onDeleteFormCart = (isbn) => {
@@ -75,13 +80,14 @@ export default class App extends React.Component {
           <Navbar number={orders.length}/>
           <Container>
           <Row>
-            <Col md="8">
+            <Col md="8" sm="12">
                 <Route exact path="/">
                   <CatalogList onSelectItem={this.onSelectItem}/>
                 </Route>
                 <Route path="/cart">
                   <CartList
                     orders={orders}
+                    onChangeAmount={this.onChangeAmount}
                     onDelete={this.onDeleteFormCart}/>
                 </Route>
             </Col>

@@ -75,7 +75,7 @@ export default class ProductDetails extends React.Component {
 
   onChangeAmount = event => {
     this.setState({
-      amount: event.target.value});
+      amount: +event.target.value});
   };
 
   onFormSubmit = event => {
