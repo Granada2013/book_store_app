@@ -5,23 +5,20 @@ import ProductDetails from '../productDetails';
 import CartList from '../cartList';
 import Navbar from '../navbar';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import ErrorMessage from '../errorMessage';
+
 
 export default class App extends React.Component {
   state = {
       orders: [],
       selectedItem: null,
       isOpenModal: false,
+      error: false
     };
 
   onSelectItem = (selectedItem) => {
     this.toggleModal();
     this.setState({selectedItem});
-  };
-
-  toggleModal = () => {
-    this.setState({
-      isOpenModal: !this.state.isOpenModal
-    });
   };
 
   onAddToCart = (amount) => {
@@ -67,8 +64,25 @@ export default class App extends React.Component {
     });
   };
 
+  toggleModal = () => {
+    this.setState({
+      isOpenModal: !this.state.isOpenModal
+    });
+  };
+
+  componentDidCatch = () => {
+    this.setState({
+      error: true
+    });
+  };
+
   render() {
-    const {orders, selectedItem, isOpenModal} = this.state;
+    const {orders, selectedItem, isOpenModal, error} = this.state;
+    if (error) return (
+      <Container>
+        <ErrorMessage/>
+      </Container>);
+
     const modal = isOpenModal ? <ProductDetails
                                   selectedItem={selectedItem}
                                   isOpen={isOpenModal}

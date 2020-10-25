@@ -1,11 +1,23 @@
 import React from 'react';
-import {ListGroup, Button} from 'reactstrap';
+import {ListGroup} from 'reactstrap';
 import CartListItem from '../cartListItem';
+import ErrorMessage from '../errorMessage';
+
 
 export default class CartList extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  state = {
+    error: false
+  };
+
+  componentDidCatch = () => {
+    this.setState({
+      error: true
+    });
+  };
 
   renderOrderItems = orders => {
     if (orders.length === 0) {
@@ -23,6 +35,7 @@ export default class CartList extends React.Component {
   };
 
   render() {
+    if (this.state.error) return <ErrorMessage/>;
     const orderItems = this.renderOrderItems(this.props.orders);
     return (
       <>

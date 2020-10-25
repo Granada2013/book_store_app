@@ -3,6 +3,7 @@ import {ListGroup} from 'reactstrap';
 import CatalogListItem from '../catalogListItem';
 import Spinner from '../spinner';
 import CatalogService from '../../services/catalogService';
+import ErrorMessage from '../errorMessage';
 
 
 export default class CatalogList extends React.Component {
@@ -37,6 +38,10 @@ export default class CatalogList extends React.Component {
       .catch(this.onLoadError);
   };
 
+  componentDidCatch = () => {
+    this.onLoadError();
+  };
+
   renderItems = (arr) => {
     return arr.map( (item) => {
       const {isbn13} = item;
@@ -49,7 +54,9 @@ export default class CatalogList extends React.Component {
   };
 
   render() {
-    const {loading, list} = this.state;
+    const {loading, error, list} = this.state;
+    if (error) return <ErrorMessage/>;
+
     const content = loading ? <Spinner/> : this.renderItems(list);
     return (
       <>
