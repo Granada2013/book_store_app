@@ -23,7 +23,7 @@ const CustomBadge = styled(Badge)`
   transition: none;
 `;
 
-const ShoppingCart = (props) => {
+const CartWidget = (props) => {
   return (
     <CartBlock>
       <i className="fa fa-shopping-cart"/>
@@ -32,4 +32,4 @@ const ShoppingCart = (props) => {
   );
 };
 
-export default ShoppingCart;
+export default CartWidget;

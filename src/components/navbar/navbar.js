@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container} from 'reactstrap';
 import {Link} from 'react-router-dom';
-import ShoppingCart from '../shoppingCart';
+import CartWidget from '../cartWidget';
 
 
 import styled from 'styled-components';
@@ -36,12 +36,12 @@ const Navbar = (props) => {
       <Container>
         <Link to="/"><span className='home'>Home</span></Link>
         <Link to="/cart">
-          <ShoppingCart
+          <CartWidget
             number={props.number}/>
         </Link>
       </Container>
     </NavBlock>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
