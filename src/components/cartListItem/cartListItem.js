@@ -2,23 +2,26 @@ import React from 'react';
 import {ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
 import Counter from '../counter';
+import AlertMessage from '../alertMessage';
 
 const ListItem = styled(ListGroupItem)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   .main-info {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 70%;
-    img {
-      width: 70px;
+    .title {
+      display: flex;
+      align-items: center;
+      width: 70%;
+      img {
+        width: 70px;
+      }
     }
-  }
-  .fa {
-    cursor: pointer;
-    font-size: 1.2em;
-    color: #e62020;
+    .fa {
+      cursor: pointer;
+      font-size: 1.2em;
+      color: #e62020;
+    }
   }
 `;
 
@@ -28,13 +31,28 @@ export default class CartListItem extends React.Component {
   }
 
   state = {
-    isValid: true
+    isValidAmount: true
+  };
+
+  componentDidMount = () => {
+    const isValidAmount = this.props.orderItem.amount <= 3 ? true : false;
+    this.setState({isValidAmount});
   };
 
   onUpdateAmount = event => {
     const {isbn13, amount} = this.props.orderItem;
     const updatedAmount = +event.target.value;
     this.props.onChangeAmount({isbn: isbn13, amount: updatedAmount});
+
+    if (updatedAmount > 3) {
+      this.setState({
+        isValidAmount: false
+      });
+    } else {
+       this.setState({
+         isValidAmount: true
+      });
+    }
   };
 
   render() {
@@ -43,15 +61,18 @@ export default class CartListItem extends React.Component {
       return (
         <ListItem>
           <div className="main-info">
-            <img src={image} alt="img"/>
-            <span>{title}</span>
+            <div className="title">
+              <img src={image} alt="img"/>
+              <span>{title}</span>
+            </div>
+            <Counter amount={amount}
+                     onChangeAmount={this.onUpdateAmount}/>
+            <span><strong>$ {total}</strong></span>
+            <i className="fa fa-trash"
+               onClick={() => this.props.onDelete(isbn13)}/>
           </div>
-          <Counter amount={amount}
-                   onChangeAmount={this.onUpdateAmount}/>
-          <span><strong>$ {total}</strong></span>
-          <i className="fa fa-trash"
-             onClick={() => this.props.onDelete(isbn13)}/>
+          <AlertMessage success={this.state.isValidAmount}/>
         </ListItem>
       );
   }
-};
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 import {Modal, ModalHeader, ModalBody, ModalFooter, Button,
-        Row, Col, ListGroup, ListGroupItem, Label, Alert} from 'reactstrap';
+        Row, Col, ListGroup, ListGroupItem, Label} from 'reactstrap';
 import Counter from '../counter';
+import AlertMessage from '../alertMessage';
 import styled from 'styled-components';
 
 const Header = styled(ModalHeader)`
@@ -50,18 +51,6 @@ const ListItem = styled(ListGroupItem)`
   font-size: .9em;
 `;
 
-const AlertMessage = (props) => {
-  const {success} = props;
-  let alert = null;
-  if (success === false) {
-    alert = <Alert color="danger">Недостаточно книг на складе. Максимум: 3</Alert>;
-  }
-  return (
-    <>
-      {alert}
-    </>
-  );
-};
 
 export default class ProductDetails extends React.Component {
   constructor(props) {
@@ -70,29 +59,31 @@ export default class ProductDetails extends React.Component {
 
   state = {
     amount: 1,
-    success: null
+    isValidAmount: true
   };
 
   onChangeAmount = event => {
-    this.setState({
-      amount: +event.target.value});
+    const amount = +event.target.value;
+    if (amount <= 3) {
+      this.setState({isValidAmount: true});
+    } else {
+      this.setState({isValidAmount: false});
+    }
+    this.setState({amount});
   };
 
   onFormSubmit = event => {
     event.preventDefault();
-    const {amount} = this.state;
-    if (amount <= 3) {
-      this.setState({success: true});
+    const {amount, isValidAmount} = this.state;
+    if (isValidAmount) {
       this.props.onAddToCart(amount);
-      return;
     }
-    this.setState({success: false});
   };
 
   render() {
     const {selectedItem: {title, subtitle, image, price, isbn13, url},
           isOpen, toggle} = this.props;
-    const {success, amount} = this.state;
+    const {amount, isValidAmount} = this.state;
     return (
       <>
       <Modal isOpen={isOpen} toggle={toggle}>
@@ -128,7 +119,7 @@ export default class ProductDetails extends React.Component {
             <Button type='submit' color='success'>В корзину</Button>
           </form>
         </Footer>
-        <AlertMessage success={success}/>
+        <AlertMessage success={isValidAmount}/>
       </Modal>
       </>
     );
