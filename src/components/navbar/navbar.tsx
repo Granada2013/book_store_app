@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import {Container} from 'reactstrap';
 import {Link} from 'react-router-dom';
-import CartWidget from '../cartWidget';
-
-
+import CartWidget from '../cartWidget/cartWidget';
 import styled from 'styled-components';
+
 
 const NavBlock = styled.div`
   background: #292828;
@@ -27,17 +26,16 @@ const NavBlock = styled.div`
     :hover {
       color: #fff;
     }
-  }
-`;
+  }`
 
-const Navbar = (props) => {
+const Navbar: FunctionComponent<{number: number}> = ({number}) => {
   return (
     <NavBlock>
       <Container>
         <Link to="/"><span className='home'>Home</span></Link>
         <Link to="/cart">
           <CartWidget
-            number={props.number}/>
+            number={number}/>
         </Link>
       </Container>
     </NavBlock>

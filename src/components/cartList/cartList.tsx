@@ -1,11 +1,23 @@
 import React from 'react';
 import {ListGroup} from 'reactstrap';
-import CartListItem from '../cartListItem';
-import ErrorMessage from '../errorMessage';
+import CartListItem from '../cartListItem//cartListItem';
+import ErrorMessage from '../errorMessage/errorMessage';
+import {Order} from '../app/app';
 
 
-export default class CartList extends React.Component {
-  constructor(props) {
+interface Props {
+  orders: Array<Order>,
+  onChangeAmount: (isbn: string, amount: number) => void,
+  onDelete: (isbn: string) => void
+};
+
+interface State {
+  error: boolean
+}
+
+
+export default class CartList extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
   }
 
@@ -13,21 +25,22 @@ export default class CartList extends React.Component {
     error: false
   };
 
-  componentDidCatch = () => {
+  componentDidCatch = (): void => {
     this.setState({
       error: true
     });
   };
 
-  renderOrderItems = orders => {
+  renderOrderItems = (orders: Array<Order>) => {
     if (orders.length === 0) {
       return (<p>Ваша корзина пуста</p>);
     }
-    return orders.map(orderItem => {
+    return orders.map((orderItem: Order) => {
       const {isbn13} = orderItem;
       return (
         <CartListItem key={isbn13}
           orderItem={orderItem}
+          isValidAmount={orderItem.amount <= 3}
           onChangeAmount={this.props.onChangeAmount}
           onDelete={this.props.onDelete}/>
       );

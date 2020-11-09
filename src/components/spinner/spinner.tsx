@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import './spinner.css';
 
-const Spinner = () => {
+const Spinner: FunctionComponent<{}> = () => {
   return (
     <div className="loadingio-spinner-bean-eater-dnx12f7rx4">
       <div className="ldio-ybmcz69jwb">

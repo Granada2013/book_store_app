@@ -1,11 +1,11 @@
-{   "parser": "babel-eslint",
+{   "parser": "@typescript-eslint/parser",
     "env": {
         "browser": true,
         "commonjs": true,
         "es6": true,
         "node": true
     },
-    "extends": ["eslint:recommended",
+    "extends": ["plugin:@typescript-eslint/recommended",
                  "plugin:react/recommended"],
     "parserOptions": {
         "ecmaFeatures": {
@@ -26,14 +26,7 @@
         "linebreak-style": [
             "error",
             "windows"
-        ],
-        "babel/new-cap": 1,
-        "babel/camelcase": 1,
-        "babel/no-invalid-this": 1,
-        "babel/object-curly-spacing": 1,
-        "babel/semi": 1,
-        "babel/no-unused-expressions": 1,
-        "babel/valid-typeof": 1
+        ]
     },
     "settings": {
         "react": {

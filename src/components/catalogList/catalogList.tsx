@@ -1,25 +1,37 @@
 import React from 'react';
 import {ListGroup} from 'reactstrap';
-import CatalogListItem from '../catalogListItem';
-import Spinner from '../spinner';
+import CatalogListItem from '../catalogListItem/catalogListItem';
+import Spinner from '../spinner/spinner';
 import CatalogService from '../../services/catalogService';
-import ErrorMessage from '../errorMessage';
+import ErrorMessage from '../errorMessage/errorMessage';
+import { SelectedItem } from '../app/app';
 
 
-export default class CatalogList extends React.Component {
-  constructor(props) {
+interface State {
+  list: Array<SelectedItem>,
+  loading: boolean,
+  error: boolean
+};
+
+interface Props {
+  onSelectItem: (item: SelectedItem) => void
+}
+
+
+export default class CatalogList extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
   }
 
   state = {
-    list: null,
+    list: [],
     loading: true,
     error: false
   };
 
   catalogService = new CatalogService();
 
-  onLoadSuccess = (list) => {
+  onLoadSuccess = (list: Array<SelectedItem>) => {
       this.setState({
         list,
         loading: false
@@ -42,8 +54,8 @@ export default class CatalogList extends React.Component {
     this.onLoadError();
   };
 
-  renderItems = (arr) => {
-    return arr.map( (item) => {
+  renderItems = (arr: Array<SelectedItem>) => {
+    return arr.map( (item: SelectedItem) => {
       const {isbn13} = item;
       return(
         <CatalogListItem key={isbn13}
@@ -55,8 +67,9 @@ export default class CatalogList extends React.Component {
 
   render() {
     const {loading, error, list} = this.state;
-    if (error) return <ErrorMessage/>;
-
+    if (error) {
+      return <ErrorMessage/>
+    }
     const content = loading ? <Spinner/> : this.renderItems(list);
     return (
       <>

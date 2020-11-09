@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 import {Badge} from 'reactstrap';
 
@@ -23,11 +23,15 @@ const CustomBadge = styled(Badge)`
   transition: none;
 `;
 
-const CartWidget = (props) => {
+interface Props {
+  number: number
+}
+
+const CartWidget: FunctionComponent<Props> = ({number}) => {
   return (
     <CartBlock>
       <i className="fa fa-shopping-cart"/>
-      <CustomBadge color="success" pill>{props.number}</CustomBadge>
+      <CustomBadge color="success" pill>{number}</CustomBadge>
     </CartBlock>
   );
 };

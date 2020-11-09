@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import {Alert} from 'reactstrap';
 
+interface Props {
+  success: boolean
+};
 
-const AlertMessage = (props) => {
-  const {success} = props;
+const AlertMessage: FunctionComponent<Props> = ({success}) => {
   let alert = null;
   if (!success) {
     alert = <Alert color="danger">Недостаточно книг на складе. Максимум: 3</Alert>;
