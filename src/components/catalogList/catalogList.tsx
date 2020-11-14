@@ -5,6 +5,7 @@ import Spinner from '../spinner/spinner';
 import CatalogService from '../../services/catalogService';
 import ErrorMessage from '../errorMessage/errorMessage';
 import { Item } from '../app/app';
+import withErrorBoundary from '../errorBoundary/errorBoundary';
 
 
 interface State {
@@ -18,7 +19,7 @@ interface Props {
 }
 
 
-export default class CatalogList extends React.Component<Props, State> {
+class CatalogList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
@@ -80,4 +81,7 @@ export default class CatalogList extends React.Component<Props, State> {
       </>
     );
   }
-}
+};
+
+const WithErrorCatalogList = withErrorBoundary(CatalogList);
+export default  WithErrorCatalogList;

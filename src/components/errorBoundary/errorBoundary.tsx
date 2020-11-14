@@ -6,7 +6,7 @@ interface State {
   error: boolean
 };
 
-export default class ErrorBoundary extends React.Component<{},State> {
+export class ErrorBoundary extends React.Component<{}, State> {
   state = {
     error: false
   };
@@ -22,3 +22,13 @@ export default class ErrorBoundary extends React.Component<{},State> {
     return this.props.children;
   }
 }
+
+const withErrorBoundary = <T extends object>(PassedComponent: React.ComponentType<T>) => {
+  return (props: T) => (
+    <ErrorBoundary>
+      <PassedComponent {...props}/>
+    </ErrorBoundary>
+  )
+};
+
+export default  withErrorBoundary;

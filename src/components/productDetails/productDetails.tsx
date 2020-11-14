@@ -88,42 +88,41 @@ const ProductDetails: FunctionComponent<Props> = props => {
   return (
     <>
     <Modal isOpen={isOpen} toggle={toggle}>
-      <Header>
-        <Button close onClick={toggle}/>
-      </Header>
-      <Body>
-        <Row>
-          <Col md="5" className="pl-0 pr-0">
-            <img src={image} alt="Book"/>
-          </Col>
-          <Col md="7" className="pr-4">
-            <a href={url} className="title">{title}</a>
-            <p className="subtitle">{subtitle}</p>
-            <ListGroup>
-              <ListItem >
-                <span>ISBN-13</span>
-                <span>{isbn13}</span>
-              </ListItem>
-              <ListItem>
-                <span>price</span>
-                <span><strong>$ {price}</strong></span>
-              </ListItem>
-            </ListGroup>
-          </Col>
-        </Row>
-      </Body>
-      <Footer>
-        <form onSubmit={onFormSubmit}>
-          <Label for="amount">Выберите количество</Label>
-          <Counter amount={amount}
-                   onChangeAmount={onChangeAmount}/>
-          <Button type='submit' color='success'>В корзину</Button>
-        </form>
-      </Footer>
+        <Header>
+          <Button close onClick={toggle}/>
+        </Header>
+        <Body>
+          <Row>
+            <Col md="5" className="pl-0 pr-0">
+              <img src={image} alt="Book"/>
+            </Col>
+            <Col md="7" className="pr-4">
+              <a href={url} className="title">{title}</a>
+              <p className="subtitle">{subtitle}</p>
+              <ListGroup>
+                <ListItem >
+                  <span>ISBN-13</span>
+                  <span>{isbn13}</span>
+                </ListItem>
+                <ListItem>
+                  <span>price</span>
+                  <span><strong>$ {price}</strong></span>
+                </ListItem>
+              </ListGroup>
+            </Col>
+          </Row>
+        </Body>
+        <Footer>
+          <form onSubmit={onFormSubmit}>
+            <Label for="amount">Выберите количество</Label>
+            <Counter amount={amount}
+                     onChangeAmount={onChangeAmount}/>
+            <Button type='submit' color='success'>В корзину</Button>
+          </form>
+        </Footer>
       <AlertMessage success={isValidAmount}/>
     </Modal>
     </>
   );
 }
-
 export default ProductDetails;

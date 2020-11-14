@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import {ListGroup} from 'reactstrap';
 import CartListItem from '../cartListItem//cartListItem';
-import ErrorMessage from '../errorMessage/errorMessage';
 import {Order} from '../app/app';
+import withErrorBoundary from '../errorBoundary/errorBoundary';
 
 
 interface Props {
@@ -11,52 +11,36 @@ interface Props {
   onDelete: (isbn: string) => void
 };
 
-interface State {
-  error: boolean
-}
 
+const CartList: FunctionComponent<Props> = ({orders, onChangeAmount, onDelete}) => {
 
-export default class CartList extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  state = {
-    error: false
-  };
-
-  componentDidCatch = (): void => {
-    this.setState({
-      error: true
-    });
-  };
-
-  renderOrderItems = (orders: Array<Order>) => {
+  function renderOrderItems(orders: Array<Order>): React.ReactNode {
     if (orders.length === 0) {
       return (<p>Ваша корзина пуста</p>);
-    }
+    };
+
     return orders.map((orderItem: Order) => {
       const {isbn13} = orderItem;
       return (
         <CartListItem key={isbn13}
           orderItem={orderItem}
           isValidAmount={orderItem.amount <= 3}
-          onChangeAmount={this.props.onChangeAmount}
-          onDelete={this.props.onDelete}/>
+          onChangeAmount={onChangeAmount}
+          onDelete={onDelete}/>
       );
     });
   };
 
-  render() {
-    if (this.state.error) return <ErrorMessage/>;
-    const orderItems = this.renderOrderItems(this.props.orders);
-    return (
-      <>
-      <h1>Корзина</h1>
-      <ListGroup>
-        {orderItems}
-      </ListGroup>
-      </>
-    );
-  }
-}
+  const orderItems = renderOrderItems(orders);
+  return (
+    <>
+    <h1>Корзина</h1>
+    <ListGroup>
+      {orderItems}
+    </ListGroup>
+    </>
+  );
+};
+
+const WithErrorCartList = withErrorBoundary(CartList);
+export default WithErrorCartList;

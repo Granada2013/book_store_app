@@ -1,10 +1,11 @@
 import React, { FunctionComponent, useState } from 'react';
 import {Container, Row, Col} from 'reactstrap';
-import CatalogList from '../catalogList/catalogList';
+import WithErrorCatalogList from '../catalogList/catalogList';
 import ProductDetails from '../productDetails/productDetails';
-import CartList from '../cartList/cartList';
+import WithErrorCartList from '../cartList/cartList';
 import Navbar from '../navbar/navbar';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import withErrorBoundary from '../errorBoundary/errorBoundary';
 
 
 export interface Item {
@@ -83,10 +84,10 @@ const App: FunctionComponent<{}> = () => {
         <Row>
           <Col md="8" sm="12">
               <Route exact path="/">
-                <CatalogList onSelectItem={onSelectItem}/>
+                <WithErrorCatalogList onSelectItem={onSelectItem}/>
               </Route>
               <Route path="/cart">
-                <CartList
+                <WithErrorCartList
                   orders={orders}
                   onChangeAmount={onChangeAmount}
                   onDelete={onDeleteFormCart}/>
@@ -100,4 +101,5 @@ const App: FunctionComponent<{}> = () => {
   );
 }
 
-export default App;
+const WithErrorApp = withErrorBoundary(App);
+export default WithErrorApp;
