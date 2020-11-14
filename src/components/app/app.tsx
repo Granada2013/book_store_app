@@ -7,7 +7,7 @@ import Navbar from '../navbar/navbar';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 
-export interface SelectedItem {
+export interface Item {
   title: string,
   subtitle: string,
   image: string,
@@ -27,17 +27,17 @@ export interface Order {
 
 const App: FunctionComponent<{}> = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [selectedItem, setSelectedItem] = useState<SelectedItem|null>(null);
+  const [selectedItem, setSelectedItem] = useState<Item|null>(null);
   const [isOpenModal, setModal] = useState(false);
 
-  function onSelectItem(selectedItem: SelectedItem): void {
+  function onSelectItem(selectedItem:Item): void {
     setSelectedItem(selectedItem);
     toggleModal();
 
   };
 
   function onAddToCart(amount: number): void {
-    const {title, image, isbn13, price} = selectedItem as SelectedItem;
+    const {title, image, isbn13, price} = selectedItem as Item;
     const index: number = orders.findIndex((order: Order) => order.isbn13 === isbn13);
     if (index == -1) {
       setOrders([...orders, {title, image, price, isbn13, amount}]);
@@ -71,7 +71,7 @@ const App: FunctionComponent<{}> = () => {
 
 
   const modal: null | React.ReactElement = isOpenModal ? <ProductDetails
-                                    selectedItem={selectedItem as SelectedItem}
+                                    selectedItem={selectedItem as Item}
                                     isOpen={isOpenModal}
                                     toggle={toggleModal}
                                     onAddToCart={onAddToCart}/> : null;

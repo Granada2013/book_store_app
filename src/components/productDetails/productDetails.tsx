@@ -4,7 +4,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter, Button,
 import Counter from '../counter/counter';
 import AlertMessage from '../alertMessage/alertMessage';
 import styled from 'styled-components';
-import { SelectedItem } from '../app/app';
+import { Item } from '../app/app';
 
 const Header = styled(ModalHeader)`
   display: flex;
@@ -53,7 +53,7 @@ const ListItem = styled(ListGroupItem)`
 `;
 
 interface Props {
-  selectedItem: SelectedItem,
+  selectedItem: Item,
   isOpen: boolean
   toggle: () => void,
   onAddToCart: (amount: number) => void,

@@ -4,17 +4,17 @@ import CatalogListItem from '../catalogListItem/catalogListItem';
 import Spinner from '../spinner/spinner';
 import CatalogService from '../../services/catalogService';
 import ErrorMessage from '../errorMessage/errorMessage';
-import { SelectedItem } from '../app/app';
+import { Item } from '../app/app';
 
 
 interface State {
-  list: Array<SelectedItem>,
+  list: Array<Item>,
   loading: boolean,
   error: boolean
 };
 
 interface Props {
-  onSelectItem: (item: SelectedItem) => void
+  onSelectItem: (item: Item) => void
 }
 
 
@@ -31,7 +31,7 @@ export default class CatalogList extends React.Component<Props, State> {
 
   catalogService = new CatalogService();
 
-  onLoadSuccess = (list: Array<SelectedItem>) => {
+  onLoadSuccess = (list: Array<Item>) => {
       this.setState({
         list,
         loading: false
@@ -54,8 +54,8 @@ export default class CatalogList extends React.Component<Props, State> {
     this.onLoadError();
   };
 
-  renderItems = (arr: Array<SelectedItem>) => {
-    return arr.map( (item: SelectedItem) => {
+  renderItems = (arr: Array<Item>) => {
+    return arr.map( (item: Item) => {
       const {isbn13} = item;
       return(
         <CatalogListItem key={isbn13}

@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
-import { SelectedItem } from '../app/app';
+import { Item } from '../app/app';
 
 const ListItem = styled(ListGroupItem)`
   display: flex;
@@ -22,8 +22,8 @@ const ListItem = styled(ListGroupItem)`
 `;
 
 interface Props {
-  item: SelectedItem,
-  onSelectItem: (item: SelectedItem) => void,
+  item: Item,
+  onSelectItem: (item: Item) => void,
 }
 
 const CatalogListItem: FunctionComponent<Props> = ( {item, onSelectItem} ) => {
