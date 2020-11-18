@@ -82,7 +82,7 @@ const reducer = (state:IState, action:ActionsType): IState => {
       return {
         ...state,
         isOpenModal: !state.isOpenModal,
-        selectedItem: null 
+        selectedItem: null
       };
     }
     default:

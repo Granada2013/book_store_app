@@ -3,9 +3,10 @@ import {ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
 import Counter from '../counter/counter';
 import AlertMessage from '../alertMessage/alertMessage';
-import {OrderItem} from '../../types';
+import {OrderItem, ActionsType} from '../../types';
 import {changeAmountInCart, deleteFromCart} from '../../actions';
 import {connect} from 'react-redux';
+import {Dispatch} from 'redux';
 
 const ListItem = styled(ListGroupItem)`
   .main-info {
@@ -65,7 +66,7 @@ const CartListItem: FunctionComponent<Props> = props => {
 }
 
 
-const mapDispatchToProps = (dispatch: Function) => {
+const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => {
   return {
     onChangeAmount(isbn13: string, newAmount: number): void {
       dispatch(changeAmountInCart(isbn13, newAmount))

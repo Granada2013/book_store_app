@@ -4,9 +4,10 @@ import CatalogListItem from '../catalogListItem/catalogListItem';
 import Spinner from '../spinner/spinner';
 import CatalogService from '../../services/catalogService';
 import ErrorMessage from '../errorMessage/errorMessage';
-import {Item, IState} from '../../types';
+import {Item, IState, ActionsType} from '../../types';
 import {catalogLoaded, catalogError} from '../../actions';
 import {connect} from 'react-redux';
+import {Dispatch} from 'redux';
 import withErrorBoundary from '../errorBoundary/errorBoundary';
 
 
@@ -58,7 +59,7 @@ const mapStateToProps = (state: IState) => ({
   error: state.error,
 });
 
-const mapDispatchToProps = (dispatch: Function) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => ({
   onCatalogLoaded(data: Array<Item>) {
     dispatch(catalogLoaded(data))
   },

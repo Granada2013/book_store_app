@@ -4,8 +4,9 @@ import {Modal, ModalHeader, ModalBody, ModalFooter, Button,
 import Counter from '../counter/counter';
 import AlertMessage from '../alertMessage/alertMessage';
 import styled from 'styled-components';
-import {Item, IState, ISelectedItem} from '../../types';
+import {Item, IState, ISelectedItem, ActionsType} from '../../types';
 import {selectAmount, addToCart, toggleModal} from '../../actions';
+import {Dispatch} from 'redux';
 import {connect} from 'react-redux';
 
 
@@ -132,7 +133,7 @@ const mapStateToProps = (state: IState) => ({
   selectedItem: state.selectedItem
 });
 
-const mapDispatchToProps = (dispatch: Function) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => ({
   toggle() {
     dispatch(toggleModal())
   },
