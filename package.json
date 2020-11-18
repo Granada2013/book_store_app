@@ -28,14 +28,17 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@types/react-redux": "^7.1.11",
     "@types/reactstrap": "^8.7.2",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
     "bootstrap": "^4.4.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "reactstrap": "^7.1.0",
+    "redux": "^4.0.5",
     "styled-components": "^5.2.0"
   }
 }

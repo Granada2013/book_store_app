@@ -1,7 +1,10 @@
 import React, {FunctionComponent} from 'react';
 import {ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
-import { Item } from '../app/app';
+import {Item} from '../../types';
+import {selectItem} from '../../actions';
+import {connect} from 'react-redux';
+
 
 const ListItem = styled(ListGroupItem)`
   display: flex;
@@ -23,12 +26,12 @@ const ListItem = styled(ListGroupItem)`
 
 interface Props {
   item: Item,
-  onSelectItem: (item: Item) => void,
+  onSelectItem: (isbn13: string) => void,
 }
 
 const CatalogListItem: FunctionComponent<Props> = ( {item, onSelectItem} ) => {
     return (
-      <ListItem onClick={() => onSelectItem(item)}>
+      <ListItem onClick={() => onSelectItem(item.isbn13)}>
         <div className="main-info">
           <img src={item.image} alt="img"/>
           <span>{item.title}</span>
@@ -38,4 +41,10 @@ const CatalogListItem: FunctionComponent<Props> = ( {item, onSelectItem} ) => {
     );
 };
 
-export default CatalogListItem;
+const mapDispatchToProps = (dispatch: Function) => ({
+  onSelectItem(isbn13: string) {
+    dispatch(selectItem(isbn13))
+  }
+});
+
+export default connect(null, mapDispatchToProps)(CatalogListItem);

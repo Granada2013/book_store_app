@@ -1,4 +1,4 @@
-import {Item} from '../components/app/app';
+import {Item} from '../types';
 
 interface IData {
   error: string,

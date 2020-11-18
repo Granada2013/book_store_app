@@ -1,10 +1,13 @@
-import React, {ChangeEvent, FormEvent, FunctionComponent, useState} from 'react';
+import React, {ChangeEvent, FormEvent, FunctionComponent} from 'react';
 import {Modal, ModalHeader, ModalBody, ModalFooter, Button,
         Row, Col, ListGroup, ListGroupItem, Label} from 'reactstrap';
 import Counter from '../counter/counter';
 import AlertMessage from '../alertMessage/alertMessage';
 import styled from 'styled-components';
-import { Item } from '../app/app';
+import {Item, IState, ISelectedItem} from '../../types';
+import {selectAmount, addToCart, toggleModal} from '../../actions';
+import {connect} from 'react-redux';
+
 
 const Header = styled(ModalHeader)`
   display: flex;
@@ -53,41 +56,38 @@ const ListItem = styled(ListGroupItem)`
 `;
 
 interface Props {
-  selectedItem: Item,
-  isOpen: boolean
+  catalog: Array<Item>,
+  selectedItem: ISelectedItem,
+  isOpenModal: boolean
   toggle: () => void,
-  onAddToCart: (amount: number) => void,
+  onSelectAmount: (amount: number) => void,
+  onAddToCart: (isbn13: string, amount: number) => void
 }
 
 
 const ProductDetails: FunctionComponent<Props> = props => {
-  const {selectedItem, isOpen, toggle, onAddToCart} = props;
+  const {catalog, selectedItem, isOpenModal, toggle, onAddToCart, onSelectAmount} = props;
+  const {isbn13, amount} = selectedItem as ISelectedItem;
 
-  const [amount, setAmount] = useState(1);
-  const [isValidAmount, setValid] = useState(true);
-
+  const thisItem:Item|undefined = catalog.find((item:Item) => item.isbn13 === isbn13);
 
   function onChangeAmount(event: ChangeEvent<HTMLInputElement>): void {
-    const newAmount: number = +event.target.value;
-    if (newAmount <= 3) {
-      setValid(true);
-    } else {
-      setValid(false);
-    }
-    setAmount(newAmount);
-  };
+    const newAmount:number = +event.target.value;
+    onSelectAmount(newAmount);
+  }
 
-  function onFormSubmit(event: FormEvent): void {
+  function onFormSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    if (isValidAmount) {
-      onAddToCart(amount);
+    if (amount <= 3) {
+      onAddToCart(isbn13, amount);
     }
   };
 
-  const {title, subtitle, image, price, isbn13, url} = selectedItem;
+  const {title, subtitle, image, price, url} = thisItem as Item;
+
   return (
     <>
-    <Modal isOpen={isOpen} toggle={toggle}>
+    <Modal isOpen={isOpenModal} toggle={toggle}>
         <Header>
           <Button close onClick={toggle}/>
         </Header>
@@ -120,9 +120,28 @@ const ProductDetails: FunctionComponent<Props> = props => {
             <Button type='submit' color='success'>В корзину</Button>
           </form>
         </Footer>
-      <AlertMessage success={isValidAmount}/>
+      <AlertMessage isValidAmount={amount <= 3}/>
     </Modal>
     </>
   );
 }
-export default ProductDetails;
+
+const mapStateToProps = (state: IState) => ({
+  catalog: state.catalog,
+  isOpenModal: state.isOpenModal,
+  selectedItem: state.selectedItem
+});
+
+const mapDispatchToProps = (dispatch: Function) => ({
+  toggle() {
+    dispatch(toggleModal())
+  },
+  onAddToCart(isbn13: string, amount: number) {
+    dispatch(addToCart(isbn13, amount))
+  },
+  onSelectAmount(amount: number) {
+    dispatch(selectAmount(amount))
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

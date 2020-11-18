@@ -1,9 +1,11 @@
-import React, { ChangeEvent, FunctionComponent, useState } from 'react';
+import React, { ChangeEvent, FunctionComponent } from 'react';
 import {ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
 import Counter from '../counter/counter';
 import AlertMessage from '../alertMessage/alertMessage';
-import {Order} from '../app/app';
+import {OrderItem} from '../../types';
+import {changeAmountInCart, deleteFromCart} from '../../actions';
+import {connect} from 'react-redux';
 
 const ListItem = styled(ListGroupItem)`
   .main-info {
@@ -27,27 +29,18 @@ const ListItem = styled(ListGroupItem)`
 `;
 
 interface Props {
-  orderItem: Order,
+  orderItem: OrderItem,
   onChangeAmount: (isbn: string, amount: number) => void,
   onDelete: (isbn: string) => void,
-  isValidAmount: boolean
 };
 
 
 const CartListItem: FunctionComponent<Props> = props => {
-  const {orderItem, onChangeAmount, onDelete, isValidAmount: initial} = props;
-
-  const [isValidAmount, setValid] = useState(initial);
+  const {orderItem, onChangeAmount, onDelete} = props;
 
   function onUpdateAmount(event: ChangeEvent<HTMLInputElement>): void {
-    const {isbn13} = orderItem;
     const updatedAmount: number = +event.target.value;
-    onChangeAmount(isbn13, updatedAmount);
-    if (updatedAmount > 3) {
-      setValid(false);
-    } else {
-       setValid(true);
-    }
+    onChangeAmount(orderItem.isbn13, updatedAmount);
   };
 
   const {title, image, price, isbn13, amount} = orderItem;
@@ -66,9 +59,21 @@ const CartListItem: FunctionComponent<Props> = props => {
         <i className="fa fa-trash"
            onClick={() => onDelete(isbn13)}/>
       </div>
-      <AlertMessage success={isValidAmount}/>
+      <AlertMessage isValidAmount={amount <= 3}/>
     </ListItem>
   )
 }
 
-export default CartListItem;
+
+const mapDispatchToProps = (dispatch: Function) => {
+  return {
+    onChangeAmount(isbn13: string, newAmount: number): void {
+      dispatch(changeAmountInCart(isbn13, newAmount))
+    },
+    onDelete(isbn13: string): void {
+      dispatch(deleteFromCart(isbn13))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(CartListItem);

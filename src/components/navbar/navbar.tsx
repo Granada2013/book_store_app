@@ -28,14 +28,13 @@ const NavBlock = styled.div`
     }
   }`
 
-const Navbar: FunctionComponent<{number: number}> = ({number}) => {
+const Navbar: FunctionComponent<{}> = () => {
   return (
     <NavBlock>
       <Container>
         <Link to="/"><span className='home'>Home</span></Link>
         <Link to="/cart">
-          <CartWidget
-            number={number}/>
+          <CartWidget/>
         </Link>
       </Container>
     </NavBlock>

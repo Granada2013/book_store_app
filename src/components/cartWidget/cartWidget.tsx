@@ -1,6 +1,8 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 import {Badge} from 'reactstrap';
+import {connect} from 'react-redux';
+import {IState} from '../../types';
 
 
 const CartBlock = styled.div`
@@ -23,11 +25,7 @@ const CustomBadge = styled(Badge)`
   transition: none;
 `;
 
-interface Props {
-  number: number
-}
-
-const CartWidget: FunctionComponent<Props> = ({number}) => {
+const CartWidget: FunctionComponent<{number: number}> = ({number}) => {
   return (
     <CartBlock>
       <i className="fa fa-shopping-cart"/>
@@ -36,4 +34,10 @@ const CartWidget: FunctionComponent<Props> = ({number}) => {
   );
 };
 
-export default CartWidget;
+const mapStateToProps = (state: IState): {number: number} => {
+  return {
+    number: state.orders.length
+  }
+}
+
+export default connect(mapStateToProps)(CartWidget);

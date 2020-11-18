@@ -1,46 +1,35 @@
 import React, {FunctionComponent} from 'react';
 import {ListGroup} from 'reactstrap';
 import CartListItem from '../cartListItem//cartListItem';
-import {Order} from '../app/app';
+import {OrderItem, IState} from '../../types';
+import {connect} from 'react-redux';
 import withErrorBoundary from '../errorBoundary/errorBoundary';
 
 
-interface Props {
-  orders: Array<Order>,
-  onChangeAmount: (isbn: string, amount: number) => void,
-  onDelete: (isbn: string) => void
-};
+const CartList: FunctionComponent<{orders: Array<OrderItem>}> = ({orders}) => {
 
-
-const CartList: FunctionComponent<Props> = ({orders, onChangeAmount, onDelete}) => {
-
-  function renderOrderItems(orders: Array<Order>): React.ReactNode {
+  function renderOrderItems(orders: Array<OrderItem>): React.ReactNode {
     if (orders.length === 0) {
       return (<p>Ваша корзина пуста</p>);
     };
 
-    return orders.map((orderItem: Order) => {
+    return orders.map((orderItem: OrderItem) => {
       const {isbn13} = orderItem;
-      return (
-        <CartListItem key={isbn13}
-          orderItem={orderItem}
-          isValidAmount={orderItem.amount <= 3}
-          onChangeAmount={onChangeAmount}
-          onDelete={onDelete}/>
-      );
+      return <CartListItem key={isbn13} orderItem={orderItem}/>
     });
   };
-
-  const orderItems = renderOrderItems(orders);
   return (
     <>
     <h1>Корзина</h1>
-    <ListGroup>
-      {orderItems}
-    </ListGroup>
+    <ListGroup>{renderOrderItems(orders)}</ListGroup>
     </>
   );
-};
+}
 
+const mapStateToProps = (state: IState): {orders: Array<OrderItem>} => {
+  return {
+    orders: state.orders
+  }
+}
 const WithErrorCartList = withErrorBoundary(CartList);
-export default WithErrorCartList;
+export default connect(mapStateToProps)(WithErrorCartList);
