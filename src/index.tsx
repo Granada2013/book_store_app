@@ -7,10 +7,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '/public/index.css';
 
 
-store.subscribe(() => {
-  localStorage.setItem('cart', JSON.stringify(store.getState().orders))
-});
-
 render(
   <Provider store={store}>
     <WithErrorApp/>
