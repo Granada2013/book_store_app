@@ -6,7 +6,8 @@ const AlertMessage: FunctionComponent<{isValidAmount: boolean}> = ({isValidAmoun
   return (
     <>
       {isValidAmount ? null:
-      <Alert color="danger">Недостаточно книг на складе. Максимум: 3</Alert>}
+      <Alert color="danger"
+             children="Недостаточно книг на складе. Максимум: 3"/>}
     </>
   );
 };

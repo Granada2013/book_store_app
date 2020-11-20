@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
-const img = require('./er.gif');
+import  img from './error-img.gif';
 
 
 const ErrorBlock = styled.div`

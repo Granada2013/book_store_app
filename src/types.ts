@@ -25,8 +25,10 @@ export interface IState {
   orders: Array<OrderItem>,
   selectedItem: ISelectedItem|null,
   isOpenModal: boolean,
+  purchaseIsCompleted: boolean,
   loading: boolean,
-  error: boolean
+  error: boolean,
+  total: number
 }
 
 
@@ -69,9 +71,14 @@ export interface IChangeAmountInCart {
     newAmount: number}
 }
 
+export interface IPurchase {
+  type: typeof C.PURCHASE
+}
+
 export interface IToggleModal {
   type: typeof C.TOGGLE_MODAL
 }
 
 export type ActionsType = ICatalogLoaded|ICatalogError|ISelectItem|ISelectAmount|
-                          IAddToCart|IDeleteFromCart|IChangeAmountInCart|IToggleModal
+                          IAddToCart|IDeleteFromCart|IChangeAmountInCart|
+                          IPurchase|IToggleModal
