@@ -6,7 +6,8 @@ import WithErrorCartList from '../cartList/cartList';
 import ProductDetails from '../productDetails/productDetails';
 import Navbar from '../navbar/navbar';
 import PurchaseCompletePage from '../purchaseCompletePage/purchaseCompletePage';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import NotFound from '../notFound-404/notFound';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import withErrorBoundary from '../errorBoundary/errorBoundary';
 import {IState} from '../../types';
 
@@ -24,10 +25,13 @@ const App: FunctionComponent<Props> = ({isOpenModal, purchaseIsCompleted}) => {
         <Container>
         <Row>
           <Col md="8" sm="12">
+            <Switch>
               <Route exact path="/" component={WithErrorCatalogList}/>
               <Route path="/cart"
                      render={() => purchaseIsCompleted ? <PurchaseCompletePage/>:
                                                          <WithErrorCartList/>}/>
+              <Route component={NotFound}/>
+            </Switch>
           </Col>
         </Row>
         {isOpenModal ? <ProductDetails/>: null}
