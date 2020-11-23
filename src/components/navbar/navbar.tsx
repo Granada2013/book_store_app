@@ -5,7 +5,7 @@ import CartWidget from '../cartWidget/cartWidget';
 import styled from 'styled-components';
 
 
-const NavBlock = styled.div`
+const NavBlock = styled.nav`
   background: #292828;
   height: 60px;
   width: 100%;
@@ -32,8 +32,8 @@ const Navbar: FunctionComponent<{}> = () => {
   return (
     <NavBlock>
       <Container>
-        <Link to="/"><span className='home'>Home</span></Link>
-        <Link to="/cart">
+        <Link to=""><span className='home'>Home</span></Link>
+        <Link to="cart">
           <CartWidget/>
         </Link>
       </Container>

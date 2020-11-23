@@ -11,12 +11,14 @@ import withErrorBoundary from '../errorBoundary/errorBoundary';
 const Total = styled(ListGroupItem)`
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  span {
-    margin-right: 20px;
-  }
+  padding-right: 0;
+  border: none;
+  background: none;
   button {
-    width: 100px
+    width: 150px
+  }
+  strong {
+    font-size: 1.1em;
   }
 `;
 interface Props {
@@ -26,7 +28,6 @@ interface Props {
 }
 
 const CartList: React.FC<Props> = ({orders, total, onPurchase}) => {
-
   function renderOrderItems(orders: Array<OrderItem>): React.ReactNode {
     if (orders.length === 0) {
       return (<p>Ваша корзина пуста</p>);
@@ -46,13 +47,11 @@ const CartList: React.FC<Props> = ({orders, total, onPurchase}) => {
     <ListGroup>{renderOrderItems(orders)}</ListGroup>
     {total === 0 ? null:
       <Total>
-        <span>Итого: <strong>${total}</strong></span>
         <Button color='success'
                 disabled={isValidCart ? false:true}
-                onClick={onPurchase}>Купить</Button>
+                onClick={onPurchase}>Купить: <strong>${total}</strong></Button>
       </Total>
     }
-
     </>
   );
 }
