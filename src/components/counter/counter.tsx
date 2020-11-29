@@ -12,7 +12,7 @@ const CustomInput = styled(Input)`
 
 interface Props {
   amount: number,
-  onChangeAmount: (event: ChangeEvent) => void
+  onChangeAmount: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 const Counter: FunctionComponent<Props> = ({amount, onChangeAmount}) => {

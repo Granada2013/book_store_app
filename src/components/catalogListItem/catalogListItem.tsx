@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {ListGroupItem} from 'reactstrap';
 import styled from 'styled-components';
-import {Item, ActionsType} from '../../types';
+import {Item, ActionWIthPayload, Payload} from '../../types';
 import {selectItem} from '../../actions';
 import {Dispatch} from 'redux';
 import {connect} from 'react-redux';
@@ -42,7 +42,7 @@ const CatalogListItem: FunctionComponent<Props> = ( {item, onSelectItem} ) => {
     );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionWIthPayload<Payload>>) => ({
   onSelectItem(isbn13: string) {
     dispatch(selectItem(isbn13))
   }

@@ -4,7 +4,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter, Button,
 import Counter from '../counter/counter';
 import AlertMessage from '../alertMessage/alertMessage';
 import styled from 'styled-components';
-import {Item, IState, ISelectedItem, ActionsType} from '../../types';
+import {Item, IState, ISelectedItem, ActionWIthPayload, Payload} from '../../types';
 import {selectAmount, addToCart, toggleModal} from '../../actions';
 import {Dispatch} from 'redux';
 import {connect} from 'react-redux';
@@ -61,21 +61,16 @@ interface Props {
   selectedItem: ISelectedItem,
   isOpenModal: boolean
   toggle: () => void,
-  onSelectAmount: (amount: number) => void,
+  onChangeAmount: (event: ChangeEvent<HTMLInputElement>) => void,
   onAddToCart: (isbn13: string, amount: number) => void
 }
 
 
 const ProductDetails: FunctionComponent<Props> = props => {
-  const {catalog, selectedItem, isOpenModal, toggle, onAddToCart, onSelectAmount} = props;
+  const {catalog, selectedItem, isOpenModal, toggle, onAddToCart, onChangeAmount} = props;
   const {isbn13, amount} = selectedItem as ISelectedItem;
 
   const thisItem:Item|undefined = catalog.find((item:Item) => item.isbn13 === isbn13);
-
-  function onChangeAmount(event: ChangeEvent<HTMLInputElement>): void {
-    const newAmount:number = +event.target.value;
-    onSelectAmount(newAmount);
-  }
 
   function onFormSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -133,14 +128,15 @@ const mapStateToProps = (state: IState) => ({
   selectedItem: state.selectedItem
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionWIthPayload<Payload>>) => ({
   toggle() {
     dispatch(toggleModal())
   },
   onAddToCart(isbn13: string, amount: number) {
     dispatch(addToCart(isbn13, amount))
   },
-  onSelectAmount(amount: number) {
+  onChangeAmount(event: ChangeEvent<HTMLInputElement>) {
+    const amount = +event.target.value;
     dispatch(selectAmount(amount))
   }
 })

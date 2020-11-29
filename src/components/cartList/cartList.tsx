@@ -2,7 +2,7 @@ import React from 'react';
 import {ListGroup, ListGroupItem, Button} from 'reactstrap';
 import styled from 'styled-components';
 import CartListItem from '../cartListItem//cartListItem';
-import {OrderItem, IState, ActionsType} from '../../types';
+import {OrderItem, IState, ActionWIthPayload, Payload} from '../../types';
 import {purchase} from '../../actions';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
@@ -63,7 +63,7 @@ const mapStateToProps = (state: IState) => {
   }
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionWIthPayload<Payload>>) => ({
   onPurchase(): void {
     dispatch(purchase())
   }

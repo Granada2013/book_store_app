@@ -1,13 +1,14 @@
-import {IState, Item, OrderItem, ActionsType} from '.././types';
+import {IState, Item, OrderItem, ISelectedItem, ActionWIthPayload, Payload} from '.././types';
 import C from '.././constants';
 
-const reducer = (state:IState, action:ActionsType): IState => {
+const reducer = (state:IState, action:ActionWIthPayload<Payload>): IState => {
   switch (action.type) {
     case C.CATALOG_LOADED: {
+      const {catalog} = action.payload as Payload;
       return {
         ...state,
+        catalog,
         loading: false,
-        catalog: action.payload,
         purchaseIsCompleted: false
       }
     }
@@ -21,10 +22,11 @@ const reducer = (state:IState, action:ActionsType): IState => {
     }
 
     case C.SELECT_ITEM: {
+      const {isbn13} = action.payload as Payload;
       return {
         ...state,
         selectedItem: {
-          isbn13: action.payload.isbn13,
+          isbn13,
           amount: 1
         },
         isOpenModal: !state.isOpenModal,
@@ -32,17 +34,19 @@ const reducer = (state:IState, action:ActionsType): IState => {
     }
 
     case C.SELECT_AMOUNT: {
+      const {amount} = action.payload as Payload;
+      const selectedItem = state.selectedItem as ISelectedItem;
       return {
         ...state,
         selectedItem: {
-          ...state.selectedItem,
-          amount: action.payload.amount
+          ...selectedItem,
+          amount
         }
       }
     }
 
     case C.ADD_TO_CART: {
-      const {isbn13, amount} = action.payload;
+      const {isbn13, amount} = action.payload as Payload;
       const ind: number = state.orders.findIndex((order: OrderItem) => order.isbn13 === isbn13);
       let orders: Array<OrderItem>;
       let total: number;
@@ -68,7 +72,7 @@ const reducer = (state:IState, action:ActionsType): IState => {
     }
 
     case C.DELETE_FROM_CART: {
-      const {isbn13} = action.payload;
+      const {isbn13} = action.payload as Payload;
       const orders = state.orders.filter( (item: OrderItem) => item.isbn13 !== isbn13);
       const total = orders.reduce((sum: number, order: OrderItem) =>
                                    sum + (order.amount * +order.price), 0)
@@ -80,10 +84,10 @@ const reducer = (state:IState, action:ActionsType): IState => {
     }
 
     case C.CHANGE_AMOUNT_IN_CART: {
-      const {isbn13, newAmount} = action.payload;
+      const {isbn13, amount} = action.payload as Payload;
       const ind = state.orders.findIndex((order: OrderItem): boolean => order.isbn13 === isbn13);
-      const delta = newAmount - state.orders[ind].amount;
-      const updItem = {...state.orders[ind], amount: newAmount};
+      const delta = amount - state.orders[ind].amount;
+      const updItem = {...state.orders[ind], amount};
 
       return {
         ...state,

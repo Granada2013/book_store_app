@@ -4,7 +4,7 @@ import CatalogListItem from '../catalogListItem/catalogListItem';
 import Spinner from '../spinner/spinner';
 import CatalogService from '../../services/catalogService';
 import ErrorMessage from '../errorMessage/errorMessage';
-import {Item, IState, ActionsType} from '../../types';
+import {Item, IState, ActionWIthPayload, Payload} from '../../types';
 import {catalogLoaded, catalogError} from '../../actions';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
@@ -59,7 +59,7 @@ const mapStateToProps = (state: IState) => ({
   error: state.error,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionsType>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionWIthPayload<Payload>>) => ({
   onCatalogLoaded(data: Array<Item>) {
     dispatch(catalogLoaded(data))
   },
